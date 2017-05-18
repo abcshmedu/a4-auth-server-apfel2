@@ -9,9 +9,9 @@ package edu.hm.lipptobusch.shareit.oauth.businessLayer;
 /**
  * @author Maximilian Lipp, lipp@hm.edu
  * @author Florian Tobusch, tobusch@hm.edu
- * @version 2017-04-19
+ * @version 2017-05-19
  */
 public interface OAuthService {
 
-    OAuthServiceResult checkToken(String token);
+    String checkToken(String token);
 }

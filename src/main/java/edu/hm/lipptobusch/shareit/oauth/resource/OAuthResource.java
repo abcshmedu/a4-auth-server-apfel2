@@ -17,20 +17,28 @@ import javax.ws.rs.core.MediaType;
 /**
  * @author Maximilian Lipp, lipp@hm.edu
  * @author Florian Tobusch, tobusch@hm.edu
- * @version 2017-04-19
+ * @version 2017-05-19
  */
 @Path("users")
 public class OAuthResource {
 
     private static final OAuthService oAuthService = new OAuthServiceImpl();
 
-    @GET
+    /**
+     * Check if a token is valid.
+     *
+     * Possible Error: token was never created
+     * Possible Error: TTL of token is in the past
+     *
+     * @param token a unique token
+     * @return jwt including information (...)
+     */
+    @POST
     @Path("login/{token}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response checkToken(@PathParam("token") String token) {
 
-        String jwt = "here could be a jwt file"; //call oAuthService
-        //oAuthService.checkToken(token);
+        String jwt = oAuthService.checkToken(token);
 
         return Response.status(200).entity(jwt).build();
     }

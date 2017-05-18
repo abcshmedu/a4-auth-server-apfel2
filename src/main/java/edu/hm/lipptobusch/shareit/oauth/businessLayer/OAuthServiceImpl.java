@@ -9,7 +9,7 @@ package edu.hm.lipptobusch.shareit.oauth.businessLayer;
 /**
  * @author Maximilian Lipp, lipp@hm.edu
  * @author Florian Tobusch, tobusch@hm.edu
- * @version 2017-04-19
+ * @version 2017-05-19
  */
 public class OAuthServiceImpl implements OAuthService {
 
@@ -18,9 +18,13 @@ public class OAuthServiceImpl implements OAuthService {
     }
 
     @Override
-    public OAuthServiceResult checkToken(String token) {
+    public String checkToken(String token) {
 
+        /**
+         *  Check if the token is in a list.
+         *  The list contains all generated token of this OAuth-Server.
+         */
 
-        return OAuthServiceResult.OK;
+        return "here could be a jwt file";
     }
 }

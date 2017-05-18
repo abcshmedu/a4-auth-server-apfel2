@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * @author Maximilian Lipp, lipp@hm.edu
  * @author Florian Tobusch, tobusch@hm.edu
- * @version 2017-04-19
+ * @version 2017-05-19
  */
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)

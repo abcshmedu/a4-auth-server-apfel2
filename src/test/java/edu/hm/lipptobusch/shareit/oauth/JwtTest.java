@@ -10,9 +10,6 @@ import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by floriantobusch on 18.05.17.
- */
 public class JwtTest {
     public static void main(String[] args) {
 
@@ -20,8 +17,14 @@ public class JwtTest {
          * Example with JWT from: https://stormpath.com/blog/beginners-guide-jwts-in-java
          */
 
-        //generate new JWT
+
         try {
+
+
+
+            //############################
+            //generate new JWT
+
             Date expirationDate = new Date(System.currentTimeMillis() + 60000);
 
             String jwt = Jwts.builder()
@@ -36,6 +39,8 @@ public class JwtTest {
 
 
 
+
+            //############################
             //validating JWT
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey("secret".getBytes("UTF-8"))

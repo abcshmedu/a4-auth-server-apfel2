@@ -32,6 +32,7 @@ public class User {
         return username;
     }
 
+    //TODO public method for password is not secure
     public String getPassword() {
         return password;
     }

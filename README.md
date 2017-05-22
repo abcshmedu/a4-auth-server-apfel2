@@ -5,9 +5,3 @@ Das ShareIt-System soll durch eine Authentifizierung mittels OAuth erweitert wer
 
 Weitere Informationen zum Projekt (Moodle-Aufgabenstellung, Abgabetermin, ...) siehe:<br />
 https://github.com/abcshmedu/a4-auth-server-apfel2/wiki
-
-###### REST-API
-| URI-Template      | Verb          | Wirkung  |
-| -------------     |-------------  | ------   |
-| /users/login/               | POST          | Erstellt neuen Token<br />Mögliche Fehler: User nicht vorhanden<br />Möglicher Fehler: Passwort und Username nicht korrekt|
-| /users/login/{token}         | POST          | Prüfung ob Token korrekt<br />Möglicher Fehler: Token wurde nicht ausgestellt<br />Möglicher Fehler: TTL des Token bereits abgelaufen|

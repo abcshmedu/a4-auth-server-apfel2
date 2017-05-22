@@ -13,16 +13,14 @@
 <body>
     <div class="container">
 	  <div class="row">
-	    <div class="three columns">
-	    	<input value="New Book" type="button" onclick="changeContentBook('newbook.partial')">
-	    	<input value="New Disc" type="button" onclick="changeContentDisc('newdisc.partial')">
-	    	<input value="List Books" type="button" onclick="listBooks()">
-	    	<input value="List Discs" type="button" onclick="listDiscs()">
-	    </div>
-		  <div class="nine columns" id="content">
-			  <h2>ShareIt</h2>
-			  <p>Welcome to the ShareIt-Platform</p>
-		  </div>
+		  <h2>ShareIt - Login for OAuth</h2>
+		  <table border="0"><tbody>
+		  <tr><td><label for="username">User:</label></td> <td><input type="text" name="username"></td></tr>
+		  <tr><td><label for="password">Pssword:</label></td> <td><input type="password" name="password"></td></tr>
+		  </tbody></table>
+		  <div><span id="errormessage" class="hidden error">ERROR</span></div>
+          <div id="content"></div>
+		  <input type="button" class="button-primary" id="registerButton" onclick="login()" value="Login"/>
 	  </div>
     </div>
  </body>

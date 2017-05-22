@@ -6,6 +6,8 @@
 
 package edu.hm.lipptobusch.shareit.oauth.businessLayer;
 
+import edu.hm.lipptobusch.shareit.oauth.models.User;
+
 /**
  * @author Maximilian Lipp, lipp@hm.edu
  * @author Florian Tobusch, tobusch@hm.edu
@@ -14,4 +16,6 @@ package edu.hm.lipptobusch.shareit.oauth.businessLayer;
 public interface OAuthService {
 
     String checkToken(String token);
+
+    String createToken(User user);
 }

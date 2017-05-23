@@ -5,3 +5,4 @@ Das ShareIt-System soll durch eine Authentifizierung mittels OAuth erweitert wer
 
 Weitere Informationen zum Projekt (Moodle-Aufgabenstellung, Abgabetermin, ...) siehe:<br />
 https://github.com/abcshmedu/a4-auth-server-apfel2/wiki
+test

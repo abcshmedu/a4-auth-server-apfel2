@@ -78,6 +78,8 @@ public class OAuthResource {
 
         //String token = oAuthService.createToken(user);
 
+        System.out.println("createToken(): " + user.toString());
+
         return Response.status(200).entity(OAuthServiceResult.OK).build();
     }
 

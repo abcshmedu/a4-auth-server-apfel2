@@ -24,7 +24,7 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
-        ttl = System.currentTimeMillis() + 1000 * 60 * 2;
+        ttl = System.currentTimeMillis() + 1000 * 60 * 20;
 
     }
 

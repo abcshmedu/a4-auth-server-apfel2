@@ -55,4 +55,12 @@ public class User {
         result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

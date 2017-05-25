@@ -6,7 +6,13 @@
 
 package edu.hm.lipptobusch.shareit.oauth.businessLayer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.hm.lipptobusch.shareit.oauth.models.User;
+import edu.hm.lipptobusch.shareit.oauth.resource.OAuthResource;
+import org.json.JSONObject;
+
+import java.security.SecureRandom;
 
 /**
  * @author Maximilian Lipp, lipp@hm.edu
@@ -14,6 +20,8 @@ import edu.hm.lipptobusch.shareit.oauth.models.User;
  * @version 2017-05-19
  */
 public class OAuthServiceImpl implements OAuthService {
+
+    protected static SecureRandom random = new SecureRandom();
 
     public OAuthServiceImpl() {
 
@@ -30,11 +38,34 @@ public class OAuthServiceImpl implements OAuthService {
          *    It can be found in the folder test/java/edu/hm/lipptobusch/shareit/oauth.
          */
 
-        return "here could be a jwt file";
+
+
+        for(User u: OAuthResource.getAllUsers()) {
+            if (token.equals(u.getToken())) {
+                ObjectMapper jsonMapper = new ObjectMapper();
+                    //jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(u);
+
+                if (u.isAdmin()) {
+                    return new JSONObject().put("admin", "true").toString();
+                } else {
+                    return new JSONObject().put("admin", "false").toString();
+                }
+
+
+
+
+                //token valid
+            }
+        }
+
+        return ""; //token not valid
+
     }
 
     @Override
     public String createToken(User user) {
-        return null;
+        long longToken = Math.abs( random.nextLong() );
+        String random = Long.toString( longToken, 16 );
+        return ( user.getUsername() + ":" + random );
     }
 }

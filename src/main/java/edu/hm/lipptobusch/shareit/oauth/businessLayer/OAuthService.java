@@ -7,6 +7,7 @@
 package edu.hm.lipptobusch.shareit.oauth.businessLayer;
 
 import edu.hm.lipptobusch.shareit.oauth.models.User;
+import org.json.JSONObject;
 
 /**
  * @author Maximilian Lipp, lipp@hm.edu

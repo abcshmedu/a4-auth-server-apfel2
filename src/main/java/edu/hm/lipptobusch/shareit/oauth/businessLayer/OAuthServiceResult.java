@@ -34,7 +34,8 @@ public enum OAuthServiceResult {
 
      */
 
-    OK(200,"OK");
+    OK(200,"OK"),
+    USERNAME_PASSWORD_WRONG(401,"Username or password wrong");
 
     private final int statusCode;
     private final String message;

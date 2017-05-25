@@ -14,6 +14,27 @@ package edu.hm.lipptobusch.shareit.oauth.models;
 public class User {
     private final String username;
     private final String password;
+    private String token = null;
+    private long ttl;
+    boolean admin = false;
+
+    public long getTtl() {
+        return ttl;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+        ttl = System.currentTimeMillis() + 1000 * 60 * 2;
+
+    }
+
+    public String getToken() {
+        // Reset token if the current time is after ttl
+        if (ttl < System.currentTimeMillis()) {
+            token = null;
+        }
+        return token;
+    }
 
     /**
      * private default constructor is needed for reflection (Jackson)
@@ -21,6 +42,7 @@ public class User {
     private User() {
         this.username = null;
         this.password = null;
+
     }
 
     public User(String username, String password) {
@@ -62,5 +84,9 @@ public class User {
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public boolean isAdmin() {
+        return admin;
     }
 }

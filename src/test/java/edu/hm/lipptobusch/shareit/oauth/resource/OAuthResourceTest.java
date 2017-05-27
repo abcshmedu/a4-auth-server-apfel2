@@ -5,9 +5,15 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Created by floriantobusch on 25.05.17.
+ * @author Florian Tobusch, tobusch@hm.edu
+ * @author Carolin Direnberger
+ * @author Juliane Seidl
+ * @author Maximilian Lipp, lipp@hm.edu
  */
 public class OAuthResourceTest {
+
+//    @TODO Test
+
     @Test
     public void testUpdateDiscUpdatingFsk() {
         //arrange

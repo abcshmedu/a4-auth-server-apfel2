@@ -7,8 +7,10 @@
 package edu.hm.lipptobusch.shareit.oauth.models;
 
 /**
- * @author Maximilian Lipp, lipp@hm.edu
  * @author Florian Tobusch, tobusch@hm.edu
+ * @author Carolin Direnberger
+ * @author Juliane Seidl
+ * @author Maximilian Lipp, lipp@hm.edu
  * @version 2017-05-19
  */
 public class User {
@@ -16,15 +18,12 @@ public class User {
     private final String password;
     private String token = null;
     private long ttl;
-    boolean admin = false;
+    private boolean admin = false;
 
-    public long getTtl() {
-        return ttl;
-    }
 
     public void setToken(String token) {
         this.token = token;
-        ttl = System.currentTimeMillis() + 1000 * 60 * 20;
+        ttl = System.currentTimeMillis() + 1000 * 60 * 2;
 
     }
 
@@ -40,21 +39,23 @@ public class User {
      * private default constructor is needed for reflection (Jackson)
      */
     private User() {
-        this.username = null;
-        this.password = null;
+        this.username = "";
+        this.password = "";
 
     }
 
-    public User(String username, String password) {
+
+    public User(String username, String password, boolean admin) {
         this.username = username;
         this.password = password;
+        this.admin = admin;
     }
 
     public String getUsername() {
         return username;
     }
 
-    //TODO public method for password is not secure
+
     public String getPassword() {
         return password;
     }
@@ -66,9 +67,7 @@ public class User {
 
         User user = (User) o;
 
-        if (getUsername() != null ? !getUsername().equals(user.getUsername()) : user.getUsername() != null)
-            return false;
-        return getPassword() != null ? getPassword().equals(user.getPassword()) : user.getPassword() == null;
+        return getUsername().equals(user.getUsername()) && getPassword().equals(user.getPassword());
     }
 
     @Override

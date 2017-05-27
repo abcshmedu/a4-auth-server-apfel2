@@ -6,22 +6,23 @@
 
 package edu.hm.lipptobusch.shareit.oauth.businessLayer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.hm.lipptobusch.shareit.oauth.models.User;
 import edu.hm.lipptobusch.shareit.oauth.resource.OAuthResource;
 import org.json.JSONObject;
 
 import java.security.SecureRandom;
+import java.util.Set;
 
 /**
- * @author Maximilian Lipp, lipp@hm.edu
  * @author Florian Tobusch, tobusch@hm.edu
+ * @author Carolin Direnberger
+ * @author Juliane Seidl
+ * @author Maximilian Lipp, lipp@hm.edu
  * @version 2017-05-19
  */
 public class OAuthServiceImpl implements OAuthService {
 
-    protected static SecureRandom random = new SecureRandom();
+    private static final SecureRandom random = new SecureRandom();
 
     public OAuthServiceImpl() {
 
@@ -39,19 +40,14 @@ public class OAuthServiceImpl implements OAuthService {
          */
 
 
-
-        for(User u: OAuthResource.getAllUsers()) {
+        for (User u : OAuthResource.getUsers()) {
             if (token.equals(u.getToken())) {
-                ObjectMapper jsonMapper = new ObjectMapper();
-                    //jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(u);
 
                 if (u.isAdmin()) {
                     return new JSONObject().put("admin", "true").toString();
                 } else {
                     return new JSONObject().put("admin", "false").toString();
                 }
-
-
 
 
                 //token valid
@@ -64,8 +60,10 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public String createToken(User user) {
-        long longToken = Math.abs( random.nextLong() );
-        String random = Long.toString( longToken, 16 );
-        return ( user.getUsername() + ":" + random );
+        long longToken = Math.abs(random.nextLong());
+        String random = Long.toString(longToken, 16);
+        return (user.getUsername() + ":" + random);
     }
+
+
 }

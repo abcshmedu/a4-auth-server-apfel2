@@ -5,11 +5,14 @@
  */
 
 package edu.hm.lipptobusch.shareit.oauth.businessLayer;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
- * @author Maximilian Lipp, lipp@hm.edu
  * @author Florian Tobusch, tobusch@hm.edu
+ * @author Carolin Direnberger
+ * @author Juliane Seidl
+ * @author Maximilian Lipp, lipp@hm.edu
  * @version 2017-05-19
  */
 
@@ -34,8 +37,10 @@ public enum OAuthServiceResult {
 
      */
 
-    OK(200,"OK"),
-    USERNAME_PASSWORD_WRONG(401,"Username or password wrong");
+    OK(200, "OK"),
+    USERNAME_PASSWORD_WRONG(401, "Username or password wrong"),
+    INVALID_TOKEN(404, "Token not valid"),
+    ERROR(400, "Action failed");
 
     private final int statusCode;
     private final String message;
@@ -45,7 +50,10 @@ public enum OAuthServiceResult {
         this.message = message;
     }
 
-    private OAuthServiceResult() {statusCode = 0; message = "";}
+//    OAuthServiceResult() {
+//        statusCode = 0;
+//        message = "";
+//    }
 
     public int getStatusCode() {
         return statusCode;

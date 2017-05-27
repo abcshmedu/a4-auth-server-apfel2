@@ -7,39 +7,45 @@
 package edu.hm.lipptobusch.shareit.oauth.resource;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.hm.lipptobusch.shareit.oauth.businessLayer.OAuthService;
 import edu.hm.lipptobusch.shareit.oauth.businessLayer.OAuthServiceImpl;
 import edu.hm.lipptobusch.shareit.oauth.businessLayer.OAuthServiceResult;
 import edu.hm.lipptobusch.shareit.oauth.models.User;
 import org.json.JSONObject;
 
-import javax.ws.rs.core.Response;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author Maximilian Lipp, lipp@hm.edu
  * @author Florian Tobusch, tobusch@hm.edu
+ * @author Carolin Direnberger
+ * @author Juliane Seidl
+ * @author Maximilian Lipp, lipp@hm.edu
  * @version 2017-05-19
  */
 @Path("users")
 public class OAuthResource {
 
+    private ObjectMapper jsonMapper = new ObjectMapper();
     private static final OAuthService oAuthService = new OAuthServiceImpl();
-    private static final Set<User> allUsers = new HashSet<User>(){{
-        add(new User("Hannah","Nana"));
+    private static final Set<User> users = new HashSet<User>() {{
+        add(new User("Hannah", "Nana", false));
+        add(new User("admin", "admin", true));
     }};
 
-    public static Set<User> getAllUsers() {
-        return allUsers;
+    public static Set<User> getUsers() {
+        return users;
     }
 
     /**
      * Check if a token is valid.
-     *
+     * <p>
      * Possible Error: token was never created
      * Possible Error: TTL of token is in the past
      *
@@ -54,9 +60,9 @@ public class OAuthResource {
 
         String jwt = oAuthService.checkToken(token);
         if (jwt.isEmpty()) {
-            return Response.status(404).entity("token not valid").build();
+            return Response.status(OAuthServiceResult.INVALID_TOKEN.getStatusCode()).entity(OAuthServiceResult.INVALID_TOKEN.getMessage()).build();
         }
-        return Response.status(200).entity(jwt).build();
+        return Response.status(OAuthServiceResult.OK.getStatusCode()).entity(jwt).build();
     }
 
     /**
@@ -75,7 +81,7 @@ public class OAuthResource {
 
     /**
      * Get User-information from login-page and deliver a token.
-     *
+     * <p>
      * Possible Error: user not in the database
      * Possible Error: password or username not correct
      *
@@ -88,7 +94,7 @@ public class OAuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(User user) {
 
-        for(User u: allUsers) {
+        for (User u : users) {
             if (u.equals(user)) {
                 String token = oAuthService.createToken(user);
                 u.setToken(token);
@@ -107,15 +113,40 @@ public class OAuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response logout(User user) {
 
-        for(User u: allUsers) {
+        for (User u : users) {
             if (u.equals(user)) {
                 u.setToken(null);
                 return Response.status(200).entity("successful logout").build();
             }
         }
 
-        return Response.status(400).entity("logout failed").build();
+        return Response.status(OAuthServiceResult.ERROR.getStatusCode()).entity("Logout failed").build();
     }
 
+
+    @GET
+    @Path("getAll/{token}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllUser(@PathParam("token") String token) {
+
+        String jwt = oAuthService.checkToken(token);
+
+
+
+
+
+        if(jwt.contains("true")){
+            try {
+                return Response.status(OAuthServiceResult.OK.getStatusCode()).entity(jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(users)).build();
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+        return Response.status(OAuthServiceResult.INVALID_TOKEN.getStatusCode()).entity("Permission denied.").build();
+    }
 
 }

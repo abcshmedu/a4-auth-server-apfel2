@@ -23,33 +23,45 @@ import java.util.List;
 
 /**
  * @author Florian Tobusch, tobusch@hm.edu
- * @author Carolin Direnberger
- * @author Juliane Seidl
+ * @author Carolin Direnberger, c.direnberger@hm.edu
+ * @author Juliane Seidl, seidl5@hm.edu
  * @author Maximilian Lipp, lipp@hm.edu
  * @version 2017-05-19
  */
-@Path("users")
+@Path("USERS")
 public class OAuthResource {
 
-    private ObjectMapper jsonMapper = new ObjectMapper();
-    private static final OAuthService oAuthService = new OAuthServiceImpl();
-    private static final List<User> users = new ArrayList<User>() {{
+    /**
+     * A JSON ObjectMapper
+     */
+    private final ObjectMapper jsonMapper = new ObjectMapper();
+    /**
+     * The authorization server
+     */
+    private static final OAuthService O_AUTH_SERVICE = new OAuthServiceImpl();
+    /**
+     * A list of all registered users
+     */
+    private static final List<User> USERS = new ArrayList<User>() {{
         add(new User("Hannah", "Nana", false));
         add(new User("admin", "admin", true));
     }};
 
+    /**
+     * @return The list of all registered users
+     */
     public static List<User> getUsers() {
-        return users;
+        return USERS;
     }
 
     /**
      * Check if a token is valid.
      * <p>
-     * Possible Error: token was never created
+     * Possible Error: Token was never created
      * Possible Error: TTL of token is in the past
      *
-     * @param token a unique token
-     * @return jwt including information (...)
+     * @param token A unique token
+     * @return A response with admin information of user when token valid otherwise error message
      */
     @GET
     @Path("login/{token}")
@@ -57,7 +69,7 @@ public class OAuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response checkToken(@PathParam("token") String token) {
 
-        String jwt = oAuthService.checkToken(token);
+        String jwt = O_AUTH_SERVICE.checkToken(token);
         if (jwt.isEmpty()) {
             return Response.status(OAuthServiceResult.INVALID_TOKEN.getStatusCode()).entity(OAuthServiceResult.INVALID_TOKEN.getMessage()).build();
         }
@@ -84,8 +96,8 @@ public class OAuthResource {
      * Possible Error: user not in the database
      * Possible Error: password or username not correct
      *
-     * @param user Object User including username and password
-     * @return
+     * @param user The user who wants to login
+     * @return A response with the created token when login was successful or an error message
      */
     @POST
     @Path("login")
@@ -93,11 +105,11 @@ public class OAuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(User user) {
 
-        for (User u : users) {
+        for (User u : USERS) {
             if (u.equals(user)) {
-                String token = oAuthService.createToken(user);
+                String token = O_AUTH_SERVICE.createToken(user);
                 u.setToken(token);
-                return Response.status(200).entity(token).build();
+                return Response.status(OAuthServiceResult.OK.getStatusCode()).entity(token).build();
             }
         }
 
@@ -106,40 +118,53 @@ public class OAuthResource {
         return Response.status(OAuthServiceResult.USERNAME_PASSWORD_WRONG.getStatusCode()).entity(OAuthServiceResult.USERNAME_PASSWORD_WRONG).build();
     }
 
+    /**
+     * Logout a user and delete the token.
+     *
+     * Possible Error: User not in the database
+     *
+     * @param user The user who wants to logout
+     * @return A response whether logout was successful or failed
+     */
     @POST
     @Path("logout")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response logout(User user) {
 
-        for (User u : users) {
+        for (User u : USERS) {
             if (u.equals(user)) {
                 u.setToken(null);
-                return Response.status(200).entity("successful logout").build();
+                return Response.status(OAuthServiceResult.OK.getStatusCode()).entity(OAuthServiceResult.OK.getMessage()).build();
             }
         }
 
-        return Response.status(OAuthServiceResult.ERROR.getStatusCode()).entity("Logout failed").build();
+        return Response.status(OAuthServiceResult.ERROR.getStatusCode()).entity(OAuthServiceResult.ERROR.getMessage()).build();
     }
 
-
+    /**
+     * Shows a list to an admin of all registered USERS.
+     *
+     * Possible Errors: User is not an admin. Permission gets denied.
+     *
+     * @param token The current token of logged-in user
+     * @return A response with the list of USERS if successful otherwise error message accordingly
+     */
     @GET
-    @Path("getAll/{token}")
+    @Path("getAllUsers/{token}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUser(@PathParam("token") String token) {
 
-        String jwt = oAuthService.checkToken(token);
-
+        String jwt = O_AUTH_SERVICE.checkToken(token);
 
         if (jwt.contains("true")) {
             try {
-                return Response.status(OAuthServiceResult.OK.getStatusCode()).entity(jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(users)).build();
+                return Response.status(OAuthServiceResult.OK.getStatusCode()).entity(jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(USERS)).build();
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         }
-
 
         return Response.status(OAuthServiceResult.INVALID_TOKEN.getStatusCode()).entity("Permission denied.").build();
     }

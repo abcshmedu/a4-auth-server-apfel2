@@ -13,16 +13,25 @@ import org.json.JSONObject;
 import java.security.SecureRandom;
 
 /**
+ * The OAuth server implementation.
+ *
  * @author Florian Tobusch, tobusch@hm.edu
- * @author Carolin Direnberger
- * @author Juliane Seidl
+ * @author Carolin Direnberger, c.direnberger@hm.edu
+ * @author Juliane Seidl, seidl5@hm.edu
  * @author Maximilian Lipp, lipp@hm.edu
  * @version 2017-05-19
  */
 public class OAuthServiceImpl implements OAuthService {
+    /**
+     * A SecureRandom number to generate a RANDOM token
+     */
+    private static final SecureRandom RANDOM = new SecureRandom();
 
-    private static final SecureRandom random = new SecureRandom();
+    private static final int TOKEN_LENGTH = 16;
 
+    /**
+     * The constructor for OAuthServiceImpl.
+     */
     public OAuthServiceImpl() {
 
     }
@@ -47,8 +56,6 @@ public class OAuthServiceImpl implements OAuthService {
                 } else {
                     return new JSONObject().put("admin", "false").toString();
                 }
-
-
                 //token valid
             }
         }
@@ -59,8 +66,8 @@ public class OAuthServiceImpl implements OAuthService {
 
     @Override
     public String createToken(User user) {
-        long longToken = Math.abs(random.nextLong());
-        String random = Long.toString(longToken, 16);
+        long longToken = Math.abs(RANDOM.nextLong());
+        String random = Long.toString(longToken, TOKEN_LENGTH);
         return (user.getUsername() + ":" + random);
     }
 

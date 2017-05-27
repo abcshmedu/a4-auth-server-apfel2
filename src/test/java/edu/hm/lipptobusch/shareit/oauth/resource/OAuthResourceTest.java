@@ -13,8 +13,8 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * @author Florian Tobusch, tobusch@hm.edu
- * @author Carolin Direnberger
- * @author Juliane Seidl
+ * @author Carolin Direnberger, c.direnberger@hm.edu
+ * @author Juliane Seidl, seidl5@hm.edu
  * @author Maximilian Lipp, lipp@hm.edu
  */
 public class OAuthResourceTest {

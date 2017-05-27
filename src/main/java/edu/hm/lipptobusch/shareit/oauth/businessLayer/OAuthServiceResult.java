@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * @author Florian Tobusch, tobusch@hm.edu
- * @author Carolin Direnberger
- * @author Juliane Seidl
+ * @author Carolin Direnberger, c.direnberger@hm.edu
+ * @author Juliane Seidl, seidl5@hm.edu
  * @author Maximilian Lipp, lipp@hm.edu
  * @version 2017-05-19
  */
@@ -25,7 +25,7 @@ public enum OAuthServiceResult {
 
         200     OK
         201     Created
-        204     No Content (z.B. nach erfolgreichem DELETE)
+        204     No Content
 
         400	    Bad Request
         401     Unauthorized
@@ -42,9 +42,21 @@ public enum OAuthServiceResult {
     INVALID_TOKEN(404, "Token not valid"),
     ERROR(400, "Action failed");
 
+    /**
+     * The status code.
+     */
     private final int statusCode;
+    /**
+     * The status message.
+     */
     private final String message;
 
+    /**
+     * The constructor for OAuthServiceResult.
+     *
+     * @param code    The status code
+     * @param message The status message
+     */
     OAuthServiceResult(int code, String message) {
         this.statusCode = code;
         this.message = message;
@@ -55,10 +67,16 @@ public enum OAuthServiceResult {
 //        message = "";
 //    }
 
+    /**
+     * @return The statusCode
+     */
     public int getStatusCode() {
         return statusCode;
     }
 
+    /**
+     * @return The status message
+     */
     public String getMessage() {
         return message;
     }

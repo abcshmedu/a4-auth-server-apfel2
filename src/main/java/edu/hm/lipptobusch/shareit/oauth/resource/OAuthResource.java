@@ -13,14 +13,13 @@ import edu.hm.lipptobusch.shareit.oauth.businessLayer.OAuthService;
 import edu.hm.lipptobusch.shareit.oauth.businessLayer.OAuthServiceImpl;
 import edu.hm.lipptobusch.shareit.oauth.businessLayer.OAuthServiceResult;
 import edu.hm.lipptobusch.shareit.oauth.models.User;
-import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Florian Tobusch, tobusch@hm.edu
@@ -34,12 +33,12 @@ public class OAuthResource {
 
     private ObjectMapper jsonMapper = new ObjectMapper();
     private static final OAuthService oAuthService = new OAuthServiceImpl();
-    private static final Set<User> users = new HashSet<User>() {{
+    private static final List<User> users = new ArrayList<User>() {{
         add(new User("Hannah", "Nana", false));
         add(new User("admin", "admin", true));
     }};
 
-    public static Set<User> getUsers() {
+    public static List<User> getUsers() {
         return users;
     }
 
@@ -133,17 +132,13 @@ public class OAuthResource {
         String jwt = oAuthService.checkToken(token);
 
 
-
-
-
-        if(jwt.contains("true")){
+        if (jwt.contains("true")) {
             try {
                 return Response.status(OAuthServiceResult.OK.getStatusCode()).entity(jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(users)).build();
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         }
-
 
 
         return Response.status(OAuthServiceResult.INVALID_TOKEN.getStatusCode()).entity("Permission denied.").build();

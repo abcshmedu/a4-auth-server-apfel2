@@ -2,8 +2,6 @@ package edu.hm.lipptobusch.shareit.oauth.resource;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * @author Florian Tobusch, tobusch@hm.edu
  * @author Carolin Direnberger

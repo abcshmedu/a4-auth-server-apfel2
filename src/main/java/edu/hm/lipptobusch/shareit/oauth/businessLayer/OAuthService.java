@@ -8,8 +8,6 @@ package edu.hm.lipptobusch.shareit.oauth.businessLayer;
 
 import edu.hm.lipptobusch.shareit.oauth.models.User;
 
-import java.util.Set;
-
 /**
  * @author Florian Tobusch, tobusch@hm.edu
  * @author Carolin Direnberger

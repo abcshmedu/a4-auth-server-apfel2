@@ -21,7 +21,6 @@ public class JwtTest {
         try {
 
 
-
             //############################
             //generate new JWT
 
@@ -38,8 +37,6 @@ public class JwtTest {
                     .compact();
 
 
-
-
             //############################
             //validating JWT
             Jws<Claims> claims = Jwts.parser()
@@ -49,13 +46,9 @@ public class JwtTest {
             assertEquals(scope, "self groups/admins");
 
 
-
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
-
-
 
 
     }

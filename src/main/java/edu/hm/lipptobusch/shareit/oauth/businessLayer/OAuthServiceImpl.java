@@ -11,7 +11,6 @@ import edu.hm.lipptobusch.shareit.oauth.resource.OAuthResource;
 import org.json.JSONObject;
 
 import java.security.SecureRandom;
-import java.util.Set;
 
 /**
  * @author Florian Tobusch, tobusch@hm.edu

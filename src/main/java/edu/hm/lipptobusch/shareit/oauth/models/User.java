@@ -21,10 +21,17 @@ public class User {
     private boolean admin = false;
 
 
+    /**
+     * Ony for Tests
+     */
+    @Deprecated
+    public void setTTLSeconds(long ttlSeconds) {
+        this.ttl = System.currentTimeMillis() + 1000 * ttlSeconds;
+    }
+
     public void setToken(String token) {
         this.token = token;
         ttl = System.currentTimeMillis() + 1000 * 60 * 2;
-
     }
 
     public String getToken() {

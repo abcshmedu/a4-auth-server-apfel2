@@ -1,9 +1,9 @@
-package edu.hm.lipptobusch.shareit.oauth.resource;
+package edu.hm.shareit.oauth.resource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.hm.lipptobusch.shareit.oauth.businessLayer.OAuthServiceResult;
-import edu.hm.lipptobusch.shareit.oauth.models.User;
+import edu.hm.shareit.oauth.businessLayer.OAuthServiceResult;
+import edu.hm.shareit.oauth.models.User;
 import org.junit.Test;
 
 import javax.ws.rs.core.Response;
@@ -23,7 +23,7 @@ public class OAuthResourceTest {
     public void createTokenAndLogoutTest() {
         OAuthResource auth = new OAuthResource();
 
-        List<User> users = auth.getUsers();
+        List<User> users = OAuthResource.getUsers();
 
         User user = users.get(0);
         assertEquals(null, user.getToken());
@@ -39,12 +39,13 @@ public class OAuthResourceTest {
     public void ttlToken() throws InterruptedException {
         OAuthResource auth = new OAuthResource();
 
-        List<User> users = auth.getUsers();
+        List<User> users = OAuthResource.getUsers();
 
         User user = users.get(0);
         assertEquals(null, user.getToken());
 
         Response response = auth.login(user);
+        //noinspection deprecation
         user.setTTLSeconds(2);
         assertEquals(response.getEntity(), user.getToken());
         Thread.sleep(3000);
@@ -59,7 +60,7 @@ public class OAuthResourceTest {
     public void tokenInvalid() {
         OAuthResource auth = new OAuthResource();
 
-        List<User> users = auth.getUsers();
+        List<User> users = OAuthResource.getUsers();
 
         User user = users.get(0);
         assertEquals(null, user.getToken());
@@ -79,7 +80,7 @@ public class OAuthResourceTest {
     public void tokenValid() {
         OAuthResource auth = new OAuthResource();
 
-        List<User> users = auth.getUsers();
+        List<User> users = OAuthResource.getUsers();
 
         User user = users.get(0);
         assertEquals(null, user.getToken());
@@ -100,7 +101,7 @@ public class OAuthResourceTest {
     public void passwordWrong() {
         OAuthResource auth = new OAuthResource();
 
-        List<User> users = auth.getUsers();
+        List<User> users = OAuthResource.getUsers();
 
         User user = users.get(0);
         assertEquals(null, user.getToken());
@@ -118,7 +119,7 @@ public class OAuthResourceTest {
     public void adminGetUsers() throws JsonProcessingException {
         OAuthResource auth = new OAuthResource();
 
-        List<User> users = auth.getUsers();
+        List<User> users = OAuthResource.getUsers();
 
         User user = users.get(1);
 
@@ -139,7 +140,7 @@ public class OAuthResourceTest {
     public void userGetsNoUsers() throws JsonProcessingException {
         OAuthResource auth = new OAuthResource();
 
-        List<User> users = auth.getUsers();
+        List<User> users = OAuthResource.getUsers();
 
         User user = users.get(0);
 

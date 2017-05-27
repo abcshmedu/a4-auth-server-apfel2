@@ -1,10 +1,4 @@
-/**
- * Organisation: Hochschule Muenchen, Fakultaet 07 Informatik und Mathematik
- * Purpose: lab software-architecture, IF4B, SS2017
- * Purpose: solution of assignment 2
- */
-
-package edu.hm.lipptobusch.shareit.oauth.models;
+package edu.hm.shareit.oauth.models;
 
 /**
  * The class for user objects.
@@ -81,6 +75,7 @@ public class User {
     /**
      * private default constructor is needed for reflection (Jackson)
      */
+    @SuppressWarnings("unused")
     private User() {
         this.username = "";
         this.password = "";
@@ -92,7 +87,7 @@ public class User {
      *
      * @param username The user's username
      * @param password The user's password
-     * @param admin The user's admin status
+     * @param admin    The user's admin status
      */
     public User(String username, String password, boolean admin) {
         this.username = username;
@@ -110,6 +105,7 @@ public class User {
     /**
      * @return The user's password
      */
+    @SuppressWarnings("WeakerAccess")
     public String getPassword() {
         return password;
     }

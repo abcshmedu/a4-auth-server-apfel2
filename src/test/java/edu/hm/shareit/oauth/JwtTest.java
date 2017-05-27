@@ -1,4 +1,4 @@
-package edu.hm.lipptobusch.shareit.oauth;
+package edu.hm.shareit.oauth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 public class JwtTest {
     public static void main(String[] args) {
 
-        /**
+        /*
          * Example with JWT from: https://stormpath.com/blog/beginners-guide-jwts-in-java
          */
 

@@ -1,18 +1,12 @@
-/**
- * Organisation: Hochschule Muenchen, Fakultaet 07 Informatik und Mathematik
- * Purpose: lab software-architecture, IF4B, SS2017
- * Purpose: solution of assignment 2
- */
-
-package edu.hm.lipptobusch.shareit.oauth.resource;
+package edu.hm.shareit.oauth.resource;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.hm.lipptobusch.shareit.oauth.businessLayer.OAuthService;
-import edu.hm.lipptobusch.shareit.oauth.businessLayer.OAuthServiceImpl;
-import edu.hm.lipptobusch.shareit.oauth.businessLayer.OAuthServiceResult;
-import edu.hm.lipptobusch.shareit.oauth.models.User;
+import edu.hm.shareit.oauth.businessLayer.OAuthService;
+import edu.hm.shareit.oauth.businessLayer.OAuthServiceImpl;
+import edu.hm.shareit.oauth.businessLayer.OAuthServiceResult;
+import edu.hm.shareit.oauth.models.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -28,7 +22,7 @@ import java.util.List;
  * @author Maximilian Lipp, lipp@hm.edu
  * @version 2017-05-19
  */
-@Path("USERS")
+@Path("users")
 public class OAuthResource {
 
     /**
@@ -120,12 +114,13 @@ public class OAuthResource {
 
     /**
      * Logout a user and delete the token.
-     *
+     * <p>
      * Possible Error: User not in the database
      *
      * @param user The user who wants to logout
      * @return A response whether logout was successful or failed
      */
+    @SuppressWarnings("UnusedReturnValue")
     @POST
     @Path("logout")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -144,7 +139,7 @@ public class OAuthResource {
 
     /**
      * Shows a list to an admin of all registered USERS.
-     *
+     * <p>
      * Possible Errors: User is not an admin. Permission gets denied.
      *
      * @param token The current token of logged-in user

@@ -33,25 +33,14 @@ public class OAuthResource {
     /**
      * The authorization server
      */
-    private static final OAuthService O_AUTH_SERVICE = new OAuthServiceImpl();
-    /**
-     * A list of all registered users
-     */
-    private static final List<User> USERS = new ArrayList<User>() {{
-        add(new User("Hannah", "Nana", false));
-        add(new User("admin", "admin", true));
-    }};
+    public final OAuthService O_AUTH_SERVICE = new OAuthServiceImpl();
 
-    /**
-     * @return The list of all registered users
-     */
-    public static List<User> getUsers() {
-        return USERS;
-    }
+
+
 
     /**
      * Check if a token is valid.
-     * <p>
+     *
      * Possible Error: Token was never created
      * Possible Error: TTL of token is in the past
      *
@@ -100,7 +89,9 @@ public class OAuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(User user) {
 
-        for (User u : USERS) {
+
+
+        for (User u : O_AUTH_SERVICE.getUsers()) {
             if (u.equals(user)) {
                 String token = O_AUTH_SERVICE.createToken(user);
                 u.setToken(token);
@@ -129,7 +120,7 @@ public class OAuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response logout(User user) {
 
-        for (User u : USERS) {
+        for (User u : O_AUTH_SERVICE.getUsers()) {
             if (u.equals(user)) {
                 u.setToken(null);
                 return Response.status(OAuthServiceResult.OK.getStatusCode()).entity(OAuthServiceResult.OK.getMessage()).build();
@@ -157,7 +148,7 @@ public class OAuthResource {
 
         if (jwt.contains("true")) {
             try {
-                return Response.status(OAuthServiceResult.OK.getStatusCode()).entity(jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(USERS)).build();
+                return Response.status(OAuthServiceResult.OK.getStatusCode()).entity(jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(O_AUTH_SERVICE.getUsers())).build();
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }

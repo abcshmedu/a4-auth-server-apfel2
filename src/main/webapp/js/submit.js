@@ -13,28 +13,39 @@ var login = function() {
         username: $("input[name=username]").val(),
         password: $("input[name=password]").val(),
 	});
-	var errorText = $("#errormessage");
+    var token;
+    var errorText = $("#errormessage");
+    var successText = $("#token");
     $.ajax({
         url: '/shareit/users/login',
         type:'POST',
         contentType: 'application/json; charset=UTF-8',
-        data: json
+        data: json,
+        success:function(response_data_json) {
+            token = response_data_json.token;
+            console.log(token); //Shows the correct piece of information
+            displayJSON(token); // Pass data to a function
+        }
         })
         .done(() => {
-			$("input[name=username]").val("");
-			$("input[name=password]").val("");
+            $("input[name=username]").val("");
+            $("input[name=password]").val("");
 
-        	errorText.removeClass("visible");
-        	errorText.addClass("hidden");
-
-            var template = "<p>login was successful</p>";
-            Mustache.parse(template);
-            var output = Mustache.render(template);
-            $("#content").html(output);
+            errorText.removeClass("visible");
+            errorText.addClass("hidden");
         })
         .fail((error) => {
-        	errorText.addClass("visible");
-        	errorText.text(error.responseJSON.message);
+            successText.removeClass("visible");
+            successText.addClass("hidden");
+            errorText.removeClass("visible");
+            errorText.text(error.responseJSON.message);
         	errorText.removeClass("hidden");
         });
+
+    function displayJSON(json_data)
+    {
+        successText.addClass("visible");
+        successText.text("Your Token: " + json_data);
+        successText.removeClass("hidden");
+    }
 }

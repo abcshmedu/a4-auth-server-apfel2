@@ -7,6 +7,7 @@ import edu.hm.shareit.oauth.businessLayer.OAuthService;
 import edu.hm.shareit.oauth.businessLayer.OAuthServiceImpl;
 import edu.hm.shareit.oauth.businessLayer.OAuthServiceResult;
 import edu.hm.shareit.oauth.models.User;
+import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -103,7 +104,8 @@ public class OAuthResource {
             if (u.equals(user)) {
                 String token = O_AUTH_SERVICE.createToken(user);
                 u.setToken(token);
-                return Response.status(OAuthServiceResult.OK.getStatusCode()).entity(token).build();
+                String tokenJSON = new JSONObject().put("token", token).toString();
+                return Response.status(OAuthServiceResult.OK.getStatusCode()).entity(tokenJSON).build();
             }
         }
 

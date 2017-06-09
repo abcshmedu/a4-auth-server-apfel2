@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.hm.shareit.oauth.businessLayer.OAuthServiceResult;
 import edu.hm.shareit.oauth.models.User;
+import org.json.JSONObject;
 import org.junit.Test;
 
 import javax.ws.rs.core.Response;
@@ -29,7 +30,9 @@ public class OAuthResourceTest {
         assertEquals(null, user.getToken());
 
         Response response = auth.login(user);
-        assertEquals(response.getEntity(), user.getToken());
+        String tmp = new JSONObject(response.getEntity().toString()).getString("token");
+
+        assertEquals(tmp, user.getToken());
 
         auth.logout(user);
         assertEquals(null, user.getToken());
@@ -47,7 +50,7 @@ public class OAuthResourceTest {
         Response response = auth.login(user);
         //noinspection deprecation
         user.setTTLSeconds(2);
-        assertEquals(response.getEntity(), user.getToken());
+        assertEquals(response.getEntity(), new JSONObject().put("token", user.getToken()).toString());
         Thread.sleep(3000);
         assertEquals(null, user.getToken());
 

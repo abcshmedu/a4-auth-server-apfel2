@@ -81,7 +81,7 @@ public class OAuthResource {
      * Possible Error: password or username not correct
      *
      * @param user The user who wants to login
-     * @return A response with the created token when login was successful or an error message
+     * @return A response with the created token as JSON when login was successful or an error message
      */
     @POST
     @Path("login")

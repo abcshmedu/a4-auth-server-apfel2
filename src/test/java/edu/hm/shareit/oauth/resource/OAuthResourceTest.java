@@ -2,12 +2,9 @@ package edu.hm.shareit.oauth.resource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.hm.shareit.oauth.businessLayer.OAuthService;
-import edu.hm.shareit.oauth.businessLayer.OAuthServiceImpl;
 import edu.hm.shareit.oauth.businessLayer.OAuthServiceResult;
 import edu.hm.shareit.oauth.models.User;
 import org.json.JSONObject;
-import org.junit.Before;
 import org.junit.Test;
 
 import javax.ws.rs.core.Response;
@@ -23,23 +20,19 @@ import static org.junit.Assert.assertEquals;
  */
 public class OAuthResourceTest {
 
-    @Before
-    public void resetData() {
-        OAuthServiceImpl.reset();
-    }
-
     @Test
     public void createTokenAndLogoutTest() {
         OAuthResource auth = new OAuthResource();
-        OAuthService oAuthService  = new OAuthServiceImpl();
 
-        List<User> users = oAuthService.getUsers();
+        List<User> users = OAuthResource.getUsers();
 
         User user = users.get(0);
         assertEquals(null, user.getToken());
 
         Response response = auth.login(user);
-        assertEquals(new JSONObject(response.getEntity().toString()).getString("token"),user.getToken());
+        String tmp = new JSONObject(response.getEntity().toString()).getString("token");
+
+        assertEquals(tmp, user.getToken());
 
         auth.logout(user);
         assertEquals(null, user.getToken());
@@ -48,16 +41,16 @@ public class OAuthResourceTest {
     @Test
     public void ttlToken() throws InterruptedException {
         OAuthResource auth = new OAuthResource();
-        OAuthService oAuthService  = new OAuthServiceImpl();
 
-        List<User> users = oAuthService.getUsers();
+        List<User> users = OAuthResource.getUsers();
+
         User user = users.get(0);
         assertEquals(null, user.getToken());
 
         Response response = auth.login(user);
         //noinspection deprecation
         user.setTTLSeconds(2);
-        assertEquals(new JSONObject(response.getEntity().toString()).getString("token"), user.getToken());
+        assertEquals(response.getEntity(), new JSONObject().put("token", user.getToken()).toString());
         Thread.sleep(3000);
         assertEquals(null, user.getToken());
 
@@ -69,9 +62,8 @@ public class OAuthResourceTest {
     @Test
     public void tokenInvalid() {
         OAuthResource auth = new OAuthResource();
-        OAuthService oAuthService  = new OAuthServiceImpl();
 
-        List<User> users = oAuthService.getUsers();
+        List<User> users = OAuthResource.getUsers();
 
         User user = users.get(0);
         assertEquals(null, user.getToken());
@@ -90,9 +82,8 @@ public class OAuthResourceTest {
     @Test
     public void tokenValid() {
         OAuthResource auth = new OAuthResource();
-        OAuthService oAuthService  = new OAuthServiceImpl();
 
-        List<User> users = oAuthService.getUsers();
+        List<User> users = OAuthResource.getUsers();
 
         User user = users.get(0);
         assertEquals(null, user.getToken());
@@ -112,9 +103,8 @@ public class OAuthResourceTest {
     @Test
     public void passwordWrong() {
         OAuthResource auth = new OAuthResource();
-        OAuthService oAuthService  = new OAuthServiceImpl();
 
-        List<User> users = oAuthService.getUsers();
+        List<User> users = OAuthResource.getUsers();
 
         User user = users.get(0);
         assertEquals(null, user.getToken());
@@ -131,9 +121,8 @@ public class OAuthResourceTest {
     @Test
     public void adminGetUsers() throws JsonProcessingException {
         OAuthResource auth = new OAuthResource();
-        OAuthService oAuthService  = new OAuthServiceImpl();
 
-        List<User> users = oAuthService.getUsers();
+        List<User> users = OAuthResource.getUsers();
 
         User user = users.get(1);
 
@@ -153,9 +142,8 @@ public class OAuthResourceTest {
     @Test
     public void userGetsNoUsers() throws JsonProcessingException {
         OAuthResource auth = new OAuthResource();
-        OAuthService oAuthService  = new OAuthServiceImpl();
 
-        List<User> users = oAuthService.getUsers();
+        List<User> users = OAuthResource.getUsers();
 
         User user = users.get(0);
 

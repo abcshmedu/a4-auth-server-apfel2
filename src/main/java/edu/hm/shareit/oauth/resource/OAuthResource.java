@@ -33,14 +33,25 @@ public class OAuthResource {
     /**
      * The authorization server
      */
-    public final OAuthService O_AUTH_SERVICE = new OAuthServiceImpl();
+    private static final OAuthService O_AUTH_SERVICE = new OAuthServiceImpl();
+    /**
+     * A list of all registered users
+     */
+    private static final List<User> USERS = new ArrayList<User>() {{
+        add(new User("Hannah", "Nana", false));
+        add(new User("admin", "admin", true));
+    }};
 
-
-
+    /**
+     * @return The list of all registered users
+     */
+    public static List<User> getUsers() {
+        return USERS;
+    }
 
     /**
      * Check if a token is valid.
-     *
+     * <p>
      * Possible Error: Token was never created
      * Possible Error: TTL of token is in the past
      *
@@ -81,7 +92,7 @@ public class OAuthResource {
      * Possible Error: password or username not correct
      *
      * @param user The user who wants to login
-     * @return A response with the created token as JSON when login was successful or an error message
+     * @return A response with the created token when login was successful or an error message
      */
     @POST
     @Path("login")
@@ -89,9 +100,7 @@ public class OAuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(User user) {
 
-
-
-        for (User u : O_AUTH_SERVICE.getUsers()) {
+        for (User u : USERS) {
             if (u.equals(user)) {
                 String token = O_AUTH_SERVICE.createToken(user);
                 u.setToken(token);
@@ -120,7 +129,7 @@ public class OAuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response logout(User user) {
 
-        for (User u : O_AUTH_SERVICE.getUsers()) {
+        for (User u : USERS) {
             if (u.equals(user)) {
                 u.setToken(null);
                 return Response.status(OAuthServiceResult.OK.getStatusCode()).entity(OAuthServiceResult.OK.getMessage()).build();
@@ -148,7 +157,7 @@ public class OAuthResource {
 
         if (jwt.contains("true")) {
             try {
-                return Response.status(OAuthServiceResult.OK.getStatusCode()).entity(jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(O_AUTH_SERVICE.getUsers())).build();
+                return Response.status(OAuthServiceResult.OK.getStatusCode()).entity(jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(USERS)).build();
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
@@ -156,4 +165,5 @@ public class OAuthResource {
 
         return Response.status(OAuthServiceResult.INVALID_TOKEN.getStatusCode()).entity("Permission denied.").build();
     }
+
 }

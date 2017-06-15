@@ -5,8 +5,6 @@ import edu.hm.shareit.oauth.resource.OAuthResource;
 import org.json.JSONObject;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The OAuth server implementation.
@@ -26,38 +24,11 @@ public class OAuthServiceImpl implements OAuthService {
     private static final int TOKEN_LENGTH = 16;
 
     /**
-     * A list of all registered users
-     */
-    private static List<User> USERS = new ArrayList<User>() {{
-        add(new User("Hannah", "Nana", false));
-        add(new User("admin", "admin", true));
-    }};
-
-
-    /**
-     * @return The list of all registered users
-     */
-    public List<User> getUsers() {
-        return USERS;
-    }
-
-    /**
      * The constructor for OAuthServiceImpl.
      */
     public OAuthServiceImpl() {
 
     }
-
-    public static void reset() {
-        USERS = new ArrayList<User>() {
-            {
-                add(new User("Hannah", "Nana", false));
-                add(new User("admin", "admin", true));
-            }
-        };
-    }
-
-
 
     @Override
     public String checkToken(String token) {
@@ -71,7 +42,7 @@ public class OAuthServiceImpl implements OAuthService {
          */
 
 
-        for (User u : getUsers()) {
+        for (User u : OAuthResource.getUsers()) {
             if (token.equals(u.getToken())) {
 
                 if (u.isAdmin()) {

@@ -2,8 +2,6 @@ package edu.hm.shareit.oauth.businessLayer;
 
 import edu.hm.shareit.oauth.models.User;
 
-import java.util.List;
-
 /**
  * The OAuth server.
  *
@@ -30,12 +28,5 @@ public interface OAuthService {
      * @return The created token
      */
     String createToken(User user);
-
-    /**
-     * Retuns List with users
-     *
-     * @return userlist
-     */
-    List<User> getUsers();
 
 }

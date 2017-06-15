@@ -156,5 +156,4 @@ public class OAuthResource {
 
         return Response.status(OAuthServiceResult.INVALID_TOKEN.getStatusCode()).entity("Permission denied.").build();
     }
-
 }

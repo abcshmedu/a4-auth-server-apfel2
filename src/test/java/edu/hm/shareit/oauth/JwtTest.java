@@ -17,7 +17,6 @@ public class JwtTest {
          * Example with JWT from: https://stormpath.com/blog/beginners-guide-jwts-in-java
          */
 
-
         try {
 
 
